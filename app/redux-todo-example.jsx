@@ -15,14 +15,26 @@ var reducer = (state = defaultState, action) => {
   }
 };
 
-var store = redux.createStore(reducer);
-var currentState = store.getState();
+var store = redux.createStore(reducer, redux.compose(
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+));
 
+var unsubscribe = store.subscribe(() => {
+  var state = store.getState();
+
+  console.log('searchText is', state.searchText);
+  document.getElementById('app').innerHTML = state.searchText;
+});
+
+var currentState = store.getState();
 console.log('currentState', currentState);
 
 store.dispatch({
   type: 'CHANGE_SEARCH_TEXT',
-  searchText: 'test'
+  searchText: 'testing...'
 });
 
-console.log("searchText should be test", store.getState());
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'searching...'
+});
