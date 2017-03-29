@@ -2,14 +2,7 @@ var redux = require('redux');
 
 console.log('Starting redux example..');
 
-var stateDefault = {
-  name: 'Anonymous',
-  hobbies: [],
-  movies: []
-}
-var nextHobbyId = 1;
-var nextMovieId = 1;
-
+//Name reducer and action generators
 var nameReducer = (state = 'Anonymous', action) => {
   switch(action.type){
     case 'CHANGE_NAME':
@@ -19,6 +12,15 @@ var nameReducer = (state = 'Anonymous', action) => {
   };
 };
 
+var changeName = (name) => {
+  return {
+    type: 'CHANGE_NAME',
+    name
+  }
+};
+
+//Hobbies reducer and action generators
+var nextHobbyId = 1;
 var hobbiesReducer = (state = [], action) => {
   switch(action.type){
     case 'ADD_HOBBY':
@@ -36,6 +38,22 @@ var hobbiesReducer = (state = [], action) => {
   }
 };
 
+var addHobby = (hobby) => {
+  return {
+    type: 'ADD_HOBBY',
+    hobby
+  }
+};
+
+var removeHobby = (id) => {
+  return {
+    type: 'REMOVE_HOBBY',
+    id
+  }
+};
+
+//Movies reducer and action generators
+var nextMovieId = 1;
 var moviesReducer = (state = [], action) => {
   switch(action.type){
     case 'ADD_MOVIE':
@@ -51,6 +69,21 @@ var moviesReducer = (state = [], action) => {
       return state.filter((movie) => movie.id !== action.id)
     default:
       return state;
+  }
+};
+
+var addMovie = (title, genre) => {
+  return {
+    type: 'ADD_MOVIE',
+    title,
+    genre
+  }
+};
+
+var removeMovie = (id) => {
+  return {
+    type: 'REMOVE_MOVIE',
+    id
   }
 };
 
@@ -78,44 +111,18 @@ var unsubscribe = store.subscribe(() => {
 var currentState = store.getState();
 console.log('currentState', currentState);
 
-store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Dustin'
-});
+store.dispatch(changeName('Dustin'));
 
-store.dispatch({
-  type: 'ADD_HOBBY',
-  hobby: 'Video Games'
-});
+store.dispatch(addHobby('Video Games'));
 
-store.dispatch({
-  type: 'ADD_HOBBY',
-  hobby: 'Sleeping'
-});
+store.dispatch(addHobby('Sleeping'));
 
-store.dispatch({
-  type: 'REMOVE_HOBBY',
-  id: 2
-});
+store.dispatch(removeHobby(2));
 
-store.dispatch({
-  type: 'CHANGE_NAME',
-  name: 'Griffin'
-});
+store.dispatch(changeName('Griffin'));
 
-store.dispatch({
-  type: 'ADD_MOVIE',
-  title: 'Rogue One',
-  genre: 'Sci-Fi'
-});
+store.dispatch(addMovie('Rogue One', 'Sci-Fi'));
 
-store.dispatch({
-  type: 'ADD_MOVIE',
-  title: 'John Wick',
-  genre: 'Action'
-});
+store.dispatch(addMovie('John Wick', 'Action'));
 
-store.dispatch({
-  type: 'REMOVE_MOVIE',
-  id: 2
-});
+store.dispatch(removeMovie(2));
